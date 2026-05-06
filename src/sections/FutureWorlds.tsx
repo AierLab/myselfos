@@ -62,7 +62,7 @@ export default function FutureWorlds() {
                   sizes="(min-width: 1024px) 33vw, (min-width: 768px) 33vw, 100vw"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                
+
                 {/* Color wash overlay */}
                 <div className={`absolute inset-0 bg-gradient-to-t ${colors[index]} opacity-40`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/20 to-transparent" />

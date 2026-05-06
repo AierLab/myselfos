@@ -110,33 +110,31 @@ export default function MilestoneSignal() {
               {milestones.map((milestone, index) => {
                 const Icon = icons[index];
                 return (
-                <div
-                  key={index}
-                  className={`flex items-center gap-4 p-3 rounded-xl border transition-all duration-300 ${
-                    milestone.complete
-                      ? 'border-gold/30 bg-gold/5'
-                      : 'border-ivory/10 bg-ivory/5'
-                  }`}
-                >
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                    milestone.complete ? 'bg-gold/20' : 'bg-ivory/5'
-                  }`}>
-                    <Icon size={18} className={milestone.complete ? 'text-gold' : 'text-ivory/30'} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-xs font-inter ${milestone.complete ? 'text-gold' : 'text-ivory/40'}`}>
-                        {milestone.label}
-                      </span>
-                      {milestone.complete && (
-                        <span className="px-2 py-0.5 rounded-full bg-gold/20 text-gold text-[10px] font-inter">{copy.complete}</span>
-                      )}
+                  <div
+                    key={index}
+                    className={`flex items-center gap-4 p-3 rounded-xl border transition-all duration-300 ${milestone.complete
+                        ? 'border-gold/30 bg-gold/5'
+                        : 'border-ivory/10 bg-ivory/5'
+                      }`}
+                  >
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${milestone.complete ? 'bg-gold/20' : 'bg-ivory/5'
+                      }`}>
+                      <Icon size={18} className={milestone.complete ? 'text-gold' : 'text-ivory/30'} />
                     </div>
-                    <p className={`text-sm font-inter ${milestone.complete ? 'text-ivory' : 'text-ivory/40'}`}>
-                      {milestone.text}
-                    </p>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xs font-inter ${milestone.complete ? 'text-gold' : 'text-ivory/40'}`}>
+                          {milestone.label}
+                        </span>
+                        {milestone.complete && (
+                          <span className="px-2 py-0.5 rounded-full bg-gold/20 text-gold text-[10px] font-inter">{copy.complete}</span>
+                        )}
+                      </div>
+                      <p className={`text-sm font-inter ${milestone.complete ? 'text-ivory' : 'text-ivory/40'}`}>
+                        {milestone.text}
+                      </p>
+                    </div>
                   </div>
-                </div>
                 )
               })}
             </div>
