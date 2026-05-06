@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type ProgressiveImageProps = {
     src: string;
@@ -10,9 +10,39 @@ type ProgressiveImageProps = {
     fetchPriority?: 'high' | 'low' | 'auto';
 };
 
+let lowResTotal = 0;
+let lowResSettled = 0;
+let lowResPhaseDone = false;
+const lowResRegistry = new Set<string>();
+const lowResSubscribers = new Set<() => void>();
+
+function notifyLowResDone() {
+    lowResSubscribers.forEach((fn) => fn());
+}
+
+function markLowResSettled() {
+    lowResSettled += 1;
+    if (!lowResPhaseDone && lowResSettled >= lowResTotal) {
+        lowResPhaseDone = true;
+        notifyLowResDone();
+    }
+}
+
+function registerLowResPath(path: string) {
+    if (!path || lowResRegistry.has(path)) return false;
+    lowResRegistry.add(path);
+    lowResTotal += 1;
+    return true;
+}
+
 function toLqipPath(src: string) {
     if (!src.startsWith('/assets/') || src.includes('/assets/lqip/')) return src;
     return src.replace('/assets/', '/assets/lqip/');
+}
+
+function toLqipWebpPath(src: string) {
+    if (!/\.(jpe?g|png)$/i.test(src)) return src;
+    return src.replace(/\.(jpe?g|png)$/i, '.webp');
 }
 
 function toWebpPath(src: string) {
@@ -26,35 +56,89 @@ export default function ProgressiveImage({
     className,
     wrapperClassName,
     sizes,
-    loading = 'lazy',
     fetchPriority = 'auto',
 }: ProgressiveImageProps) {
     const [loaded, setLoaded] = useState(false);
-    const placeholderSrc = useMemo(() => toLqipPath(src), [src]);
+    const [canLoadHighRes, setCanLoadHighRes] = useState(lowResPhaseDone);
+    const placeholderJpgSrc = useMemo(() => toLqipPath(src), [src]);
+    const placeholderWebpSrc = useMemo(() => toLqipWebpPath(placeholderJpgSrc), [placeholderJpgSrc]);
     const webpSrc = useMemo(() => toWebpPath(src), [src]);
+
+    useEffect(() => {
+        if (lowResPhaseDone) {
+            setCanLoadHighRes(true);
+            return;
+        }
+
+        const onPhaseDone = () => setCanLoadHighRes(true);
+        lowResSubscribers.add(onPhaseDone);
+        return () => {
+            lowResSubscribers.delete(onPhaseDone);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (placeholderJpgSrc === src) {
+            setCanLoadHighRes(true);
+            return;
+        }
+
+        if (lowResPhaseDone) {
+            setCanLoadHighRes(true);
+            return;
+        }
+
+        const didRegister = registerLowResPath(placeholderWebpSrc);
+        if (!didRegister) return;
+
+        let settled = false;
+        const settle = () => {
+            if (settled) return;
+            settled = true;
+            markLowResSettled();
+        };
+
+        const img = new Image();
+        img.decoding = 'async';
+        img.onload = settle;
+        img.onerror = () => {
+            const fallback = new Image();
+            fallback.decoding = 'async';
+            fallback.onload = settle;
+            fallback.onerror = settle;
+            fallback.src = placeholderJpgSrc;
+        };
+        img.src = placeholderWebpSrc;
+
+        return settle;
+    }, [placeholderJpgSrc, placeholderWebpSrc, src]);
 
     return (
         <div className={`relative overflow-hidden ${wrapperClassName ?? ''}`}>
-            {placeholderSrc !== src && (
-                <img
-                    src={placeholderSrc}
-                    alt=""
-                    aria-hidden="true"
-                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${loaded ? 'opacity-0' : 'opacity-100'}`}
-                    loading="eager"
-                    decoding="async"
-                />
+            {placeholderJpgSrc !== src && (
+                <picture>
+                    <source srcSet={placeholderWebpSrc} type="image/webp" />
+                    <img
+                        src={placeholderJpgSrc}
+                        alt=""
+                        aria-hidden="true"
+                        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${loaded ? 'opacity-0' : 'opacity-100'}`}
+                        loading="eager"
+                        decoding="async"
+                        fetchPriority="high"
+                    />
+                </picture>
             )}
 
             <picture>
-                {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
+                {webpSrc && canLoadHighRes && <source srcSet={webpSrc} type="image/webp" />}
                 <img
-                    src={src}
+                    src={canLoadHighRes ? src : undefined}
                     alt={alt}
                     sizes={sizes}
-                    loading={loading}
+                    loading="lazy"
                     decoding="async"
-                    fetchPriority={fetchPriority}
+                    fetchPriority={canLoadHighRes ? fetchPriority : 'low'}
                     onLoad={() => setLoaded(true)}
                     onError={() => setLoaded(true)}
                     className={`block transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'} ${className ?? ''}`}
