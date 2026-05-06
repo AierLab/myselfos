@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { languageOptions } from '../i18n/content';
+import type { Language } from '../i18n/content';
 import { useLanguage } from '../i18n/language';
 
 export default function Navigation() {
@@ -27,8 +28,8 @@ export default function Navigation() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-          ? 'bg-forest-deep/90 backdrop-blur-xl border-b border-gold/20 shadow-lg shadow-black/20'
-          : 'bg-transparent'
+        ? 'bg-forest-deep/90 backdrop-blur-xl border-b border-gold/20 shadow-lg shadow-black/20'
+        : 'bg-transparent'
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
@@ -66,7 +67,7 @@ export default function Navigation() {
               <span className="text-ivory/60 text-xs font-inter tracking-wide">{t.languageLabel}</span>
               <select
                 value={language}
-                onChange={(e) => setLanguage(e.target.value as 'en' | 'zh')}
+                onChange={(e) => setLanguage(e.target.value as Language)}
                 className="bg-forest-deep/80 border border-gold/30 rounded-md px-2 py-1 text-xs text-ivory font-inter"
               >
                 {languageOptions.map((option) => (
@@ -103,7 +104,7 @@ export default function Navigation() {
               <span className="text-ivory/60 text-xs font-inter tracking-wide">{t.languageLabel}</span>
               <select
                 value={language}
-                onChange={(e) => setLanguage(e.target.value as 'en' | 'zh')}
+                onChange={(e) => setLanguage(e.target.value as Language)}
                 className="bg-forest-deep/80 border border-gold/30 rounded-md px-2 py-1 text-xs text-ivory font-inter"
               >
                 {languageOptions.map((option) => (

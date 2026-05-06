@@ -14,17 +14,26 @@ const STORAGE_KEY = 'myselfos_pages_new_lang'
 
 function detectLanguage(): Language {
   const param = new URLSearchParams(window.location.search).get('lang')
-  if (param === 'zh' || param === 'en') {
+  if (param === 'zh' || param === 'en' || param === 'ja' || param === 'ko') {
     return param
   }
 
   const stored = localStorage.getItem(STORAGE_KEY)
-  if (stored === 'zh' || stored === 'en') {
+  if (stored === 'zh' || stored === 'en' || stored === 'ja' || stored === 'ko') {
     return stored
   }
 
   const browser = navigator.language.toLowerCase()
-  return browser.startsWith('zh') ? 'zh' : 'en'
+  if (browser.startsWith('zh')) {
+    return 'zh'
+  }
+  if (browser.startsWith('ja')) {
+    return 'ja'
+  }
+  if (browser.startsWith('ko')) {
+    return 'ko'
+  }
+  return 'en'
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
