@@ -59,32 +59,12 @@ export default function ProgressiveImage({
     fetchPriority = 'auto',
 }: ProgressiveImageProps) {
     const [loaded, setLoaded] = useState(false);
-    const [canLoadHighRes, setCanLoadHighRes] = useState(lowResPhaseDone);
     const placeholderJpgSrc = useMemo(() => toLqipPath(src), [src]);
     const placeholderWebpSrc = useMemo(() => toLqipWebpPath(placeholderJpgSrc), [placeholderJpgSrc]);
     const webpSrc = useMemo(() => toWebpPath(src), [src]);
 
     useEffect(() => {
-        if (lowResPhaseDone) {
-            setCanLoadHighRes(true);
-            return;
-        }
-
-        const onPhaseDone = () => setCanLoadHighRes(true);
-        lowResSubscribers.add(onPhaseDone);
-        return () => {
-            lowResSubscribers.delete(onPhaseDone);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (placeholderJpgSrc === src) {
-            setCanLoadHighRes(true);
-            return;
-        }
-
-        if (lowResPhaseDone) {
-            setCanLoadHighRes(true);
+        if (placeholderJpgSrc === src || lowResPhaseDone) {
             return;
         }
 
@@ -131,14 +111,14 @@ export default function ProgressiveImage({
             )}
 
             <picture>
-                {webpSrc && canLoadHighRes && <source srcSet={webpSrc} type="image/webp" />}
+                {webpSrc && <source srcSet={webpSrc} type="image/webp" />}
                 <img
-                    src={canLoadHighRes ? src : undefined}
+                    src={src}
                     alt={alt}
                     sizes={sizes}
                     loading="lazy"
                     decoding="async"
-                    fetchPriority={canLoadHighRes ? fetchPriority : 'low'}
+                    fetchPriority={fetchPriority}
                     onLoad={() => setLoaded(true)}
                     onError={() => setLoaded(true)}
                     className={`block transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'} ${className ?? ''}`}
