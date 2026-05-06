@@ -3,6 +3,7 @@ import { Eye, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../i18n/language';
+import ProgressiveImage from '../components/ProgressiveImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,9 +56,10 @@ export default function FutureWorlds() {
               className="relative group rounded-2xl overflow-hidden card-glow opacity-0"
             >
               <div className="relative aspect-[3/4] overflow-hidden">
-                <img
+                <ProgressiveImage
                   src={world.image}
                   alt={world.name}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 33vw, 100vw"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 

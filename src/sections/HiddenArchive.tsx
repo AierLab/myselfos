@@ -3,6 +3,7 @@ import { Lock } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../i18n/language';
+import ProgressiveImage from '../components/ProgressiveImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,9 +54,10 @@ export default function HiddenArchive() {
               className="relative group rounded-2xl overflow-hidden card-glow opacity-0"
             >
               <div className="relative aspect-[3/4] overflow-hidden">
-                <img
+                <ProgressiveImage
                   src={card.image}
                   alt={card.name}
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 

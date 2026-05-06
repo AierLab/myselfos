@@ -3,6 +3,7 @@ import { Sparkles, Lock, Info } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../i18n/language';
+import ProgressiveImage from '../components/ProgressiveImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -104,9 +105,10 @@ export default function CelestialEdition() {
             <div className="relative group max-w-[420px] lg:max-w-[480px]">
               <div className="absolute -inset-4 bg-gradient-to-r from-sky-900/20 via-blue-500/10 to-sky-900/20 rounded-3xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-700" />
               <div className="relative rounded-2xl overflow-hidden border border-sky-300/20">
-                <img
+                <ProgressiveImage
                   src={copy.image}
                   alt={copy.imageAlt}
+                  sizes="(min-width: 1024px) 480px, (min-width: 640px) 420px, 100vw"
                   className="w-full h-auto object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-transparent to-forest-deep/30" />

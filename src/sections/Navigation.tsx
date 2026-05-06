@@ -42,6 +42,9 @@ export default function Navigation() {
             <img
               src={t.logo}
               alt="MySelfOS"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
               className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover"
             />
             <span className="font-cinzel text-gold text-sm sm:text-base tracking-widest font-semibold">

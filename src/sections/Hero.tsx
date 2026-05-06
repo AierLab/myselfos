@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import gsap from 'gsap';
 import { useLanguage } from '../i18n/language';
+import ProgressiveImage from '../components/ProgressiveImage';
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -94,9 +95,12 @@ export default function Hero() {
           <div className="relative group">
             <div className="absolute -inset-4 bg-gradient-to-r from-gold/20 via-emerald-500/10 to-gold/20 rounded-3xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-700" />
             <div className="relative gold-border-glow rounded-2xl overflow-hidden max-w-[340px] sm:max-w-[420px] lg:max-w-[480px]">
-              <img
+              <ProgressiveImage
                 src={copy.image}
                 alt={copy.imageAlt}
+                loading="eager"
+                fetchPriority="high"
+                sizes="(min-width: 1024px) 480px, (min-width: 640px) 420px, 340px"
                 className="w-full h-auto object-cover"
               />
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 bg-gradient-to-t from-forest-deep/95 to-transparent">

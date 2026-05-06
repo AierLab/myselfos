@@ -3,6 +3,7 @@ import { Lock } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../i18n/language';
+import ProgressiveImage from '../components/ProgressiveImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,9 +46,10 @@ export default function UnknownGate() {
         <div className="relative max-w-[380px] sm:max-w-[420px] mx-auto mb-10 sm:mb-14">
           <div className="absolute -inset-4 bg-gradient-to-r from-violet-900/20 via-gold/10 to-violet-900/20 rounded-3xl blur-2xl opacity-30" />
           <div className="relative rounded-2xl overflow-hidden border border-violet-300/20">
-            <img
+            <ProgressiveImage
               src={copy.image}
               alt={copy.imageAlt}
+              sizes="(min-width: 640px) 420px, 380px"
               className="w-full h-auto object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-forest-deep/95 via-forest-deep/40 to-transparent" />

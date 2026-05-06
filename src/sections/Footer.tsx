@@ -16,6 +16,8 @@ export default function Footer() {
               <img
                 src={t.logo}
                 alt="MySelfOS"
+                loading="lazy"
+                decoding="async"
                 className="h-10 w-10 rounded-full object-cover"
               />
               <div>

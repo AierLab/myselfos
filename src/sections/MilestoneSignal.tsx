@@ -3,6 +3,7 @@ import { FlaskConical, Eye, FileText, Vote, MonitorPlay, Info } from 'lucide-rea
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../i18n/language';
+import ProgressiveImage from '../components/ProgressiveImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,9 +62,10 @@ export default function MilestoneSignal() {
             <div className="relative group max-w-[420px] lg:max-w-[480px]">
               <div className="absolute -inset-4 bg-gradient-to-r from-violet-900/30 via-purple-500/10 to-violet-900/30 rounded-3xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-700" />
               <div className="relative gold-border-glow rounded-2xl overflow-hidden">
-                <img
+                <ProgressiveImage
                   src={copy.image}
                   alt={copy.imageAlt}
+                  sizes="(min-width: 1024px) 480px, (min-width: 640px) 420px, 100vw"
                   className="w-full h-auto object-cover"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 bg-gradient-to-t from-forest-deep/95 to-transparent">

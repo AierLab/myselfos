@@ -3,6 +3,7 @@ import { Check, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '../i18n/language';
+import ProgressiveImage from '../components/ProgressiveImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,9 +64,10 @@ export default function FirstForm() {
             <div className="relative group max-w-[420px] lg:max-w-[500px]">
               <div className="absolute -inset-4 bg-gradient-to-r from-emerald-900/30 via-gold/10 to-emerald-900/30 rounded-3xl blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-700" />
               <div className="relative gold-border-glow rounded-2xl overflow-hidden">
-                <img
+                <ProgressiveImage
                   src={copy.image}
                   alt={copy.imageAlt}
+                  sizes="(min-width: 1024px) 500px, (min-width: 640px) 420px, 100vw"
                   className="w-full h-auto object-cover"
                 />
               </div>
