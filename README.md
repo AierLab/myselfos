@@ -1,73 +1,34 @@
-# React + TypeScript + Vite
+# MySelf OS website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[English](README.md) | [简体中文](README.zh.md)
 
-Currently, two official plugins are available:
+This repository contains the MySelf OS website. The product runtime is developed separately in the frontend repository linked below. Its checked-in package uses React, TypeScript and Vite. The package is private and currently declares version 0.0.0; that value is not the coordinated product release version.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Track cross-repository work, implementation and acceptance in [Project 9](https://github.com/users/yhbcode000/projects/9). Related repositories are the [frontend fork](https://github.com/yhbcode000/Myself-os-front), [local Agent](https://github.com/yhbcode000/Myself-os-agent), [simulator](https://github.com/yhbcode000/Myself-os-simulator) and [orchestrator research reference](https://github.com/yhbcode000/orchestrator). Each repository has its own source, version and validation evidence.
 
-## React Compiler
+## Local development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Run from the repository root with a Node.js/npm environment compatible with the checked-in dependencies:
 
-## Expanding the ESLint configuration
+~~~sh
+npm ci
+npm run dev -- --host 127.0.0.1
+~~~
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Vite configures port 3000; use the loopback URL printed by Vite. The entrypoint is index.html and application source is under src/. The @ alias resolves to src/.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+~~~sh
+npm run lint
+npm run build
+npm run preview -- --host 127.0.0.1
+~~~
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The build script runs TypeScript project checks followed by Vite. Preview serves the local build; it is not a deployment command. These commands were read from package.json and vite.config.ts, not executed as part of this documentation update.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Collaboration and evidence
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Use named branches/worktrees, inspect existing changes before editing, and link owning-repository issues and PRs to Project 9. Keep current documentation paired in English and Simplified Chinese. Keep credentials, private records, local videos and environment files out of commits.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Browser code alone does not establish native mobile support, sensor permissions, Agent integration, physical-device behavior or release acceptance. Record those checks separately for the exact candidate. Current implementation and release ownership remain in the coordinated product roadmap; this guide does not change that scope.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The original [Vite template README](docs/reference/VITE-TEMPLATE.md) is preserved as a historical English reference, including its optional lint configuration examples.
